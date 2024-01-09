@@ -74,7 +74,7 @@ def main():
                 # Step 4: Combine the new audio with the video
                 #run_command(['ffmpeg', '-i', 'movie.mp4', '-i', 'output.mp3', '-c:v', 'copy', '-map', '0:v:0', '-map', '1:a:0', '-shortest', 'final_movie.mp4'])
                 movie_output = f"{export_directory}\{row['movie_list'].split('.')[0]}.mp4"
-                command_4 = f'''ffmpeg -i '{movie_directory}\{row['movie_list']}' -i {movie_output_mp3} -c:v copy -c:a aac -strict experimental {movie_output}'''
+                command_4 = f'''ffmpeg -i '{movie_directory}\{row['movie_list']}' -i {movie_output_mp3} -c:v copy -map 0:v:0 -map 1:a:0 -shortest {movie_output}'''
 
                 run_command(command_4)
                 
