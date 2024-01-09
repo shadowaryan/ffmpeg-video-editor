@@ -1,0 +1,17 @@
+#split audio file from movie
+
+ffmpeg -i F:\old Bollywood Mp4\testing\pushpa.mkv -vn -q:a 0 -map a F:\old Bollywood Mp4\testing\pushpa.mp3
+
+# add mute part for claim audio
+#second-minutes conversion
+
+ffmpeg -i pushpa.mp3 -af "volume=enable='between(t,3000,3120)':volume=0, volume=enable='between(t,5400,5520)':volume=0, volume=enable='between(t,7200,7320)':volume=0, volume=enable='between(t,9000,9120)':volume=0" movie_silenced.mp3
+
+# final step for edited audio for output
+#millisecond-minutes conversion
+
+ffmpeg -i movie_silenced.mp3 -i input1.mp3 -i input2.mp3 -i input3.mp3 -i input4.mp3 -filter_complex "[1:a]adelay=3000000|3000000[aud1]; [2:a]adelay=5400000|5400000[aud2]; [3:a]adelay=7200000|7200000[aud3]; [4:a]adelay=9000000|9000000[aud4]; [0:a][aud1][aud2][aud3][aud4]amix=inputs=5:duration=first:dropout_transition=0" -c:a libmp3lame output.mp3
+
+# combine edited audio to main video
+
+ffmpeg -i movie.mp4 -i output.mp3 -c:v copy -map 0:v:0 -map 1:a:0 -shortest final_movie.mp4
