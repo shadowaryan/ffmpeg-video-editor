@@ -51,7 +51,7 @@ def main():
                 for x in range(len(audio_files)):
                     volume_enable = volume_enable + f"volume=enable='between(t,{row[f'claim_{x}']*60},{(row[f'claim_{x}']*60)+120})':volume=0, "
                 
-                command_2 = f'''ffmpeg -i {export_directory}\exported_audio\{extracted_mp3_audio}.mp3 -af "{volume_enable}" "{export_directory}\exported_audio\{movie_silenced}" -y'''
+                command_2 = f'''ffmpeg -i "{export_directory}\exported_audio\{extracted_mp3_audio}.mp3" -af "{volume_enable}" "{export_directory}\exported_audio\{movie_silenced}" -y'''
                 run_command(command_2)
                 # print(command_2+'\n')
 
@@ -76,7 +76,7 @@ def main():
                 # Step 4: Combine the new audio with the video
                 #run_command(['ffmpeg', '-i', 'movie.mp4', '-i', 'output.mp3', '-c:v', 'copy', '-map', '0:v:0', '-map', '1:a:0', '-shortest', 'final_movie.mp4'])
                 movie_output = f"{export_directory}\{row['movie_list'].split('.')[0]}.mp4"
-                command_4 = f'''ffmpeg -i {movie_directory}\{row['movie_list']} -i {movie_output_mp3} -c:v copy -map 0:v:0 -map 1:a:0 -shortest {movie_output} -y'''
+                command_4 = f'''ffmpeg -i "{movie_directory}\{row['movie_list']}" -i {movie_output_mp3} -c:v copy -map 0:v:0 -map 1:a:0 -shortest {movie_output} -y'''
 
                 run_command(command_4)
                 # print(command_4)
