@@ -67,7 +67,7 @@ def main():
                     aud = aud + f"[aud{x+1}]"
                 
                 movie_output_mp3 = f"{export_directory}\exported_audio\{row['movie_list'].split('.')[0]}_output.mp3"
-                command_3 = f'''ffmpeg -i "{export_directory}\exported_audio\{movie_silenced}" {audio_input}-filter_complex "{adelay}{aud}amix=inputs={len(audio_files)+1}:duration=first:dropout_transition=0" -c:a libmp3lame {movie_output_mp3} -y'''
+                command_3 = f'''ffmpeg -i "{export_directory}\exported_audio\{movie_silenced}" {audio_input}-filter_complex "{adelay}{aud}amix=inputs={len(audio_files)+1}:duration=first:dropout_transition=0" -c:a libmp3lame "{movie_output_mp3}" -y'''
 
                 run_command(command_3)
                 # print(command_3+'\n')
