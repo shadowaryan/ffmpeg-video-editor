@@ -9,9 +9,11 @@ df = pd.read_csv('movie_list.csv')
 
 def run_command(command):
     try:
-        subprocess.run(command, check=True)
+        subprocess.run(command, check=True, shell=True)
+        return True
     except subprocess.CalledProcessError as e:
         print(f"An error occurred: {e}")
+        return False
 
 def get_audio_files(directory, file_extension):
     """
@@ -37,9 +39,16 @@ def main():
                 # Step 1: Extract audio from the movie
                 #ffmpeg -i movie.mkv -vn -q:a 0 -map a movie.mp3
                 extracted_mp3_audio = (row["movie_list"]).split('.')[0]
+            
                 command = f'ffmpeg -i "{movie_directory}\{row["movie_list"]}" -vn -q:a 0 -map a "{export_directory}\exported_audio\{extracted_mp3_audio}.mp3" -y'
                 # print(command+'\n')
-                run_command(command)
+                if not run_command(command):
+                    print(f"First command failed: Trying second command.")
+                    command = f'ffmpeg -i "{movie_directory}\{row["movie_list"]}" -vn -q:a 0 "{export_directory}\exported_audio\{extracted_mp3_audio}.mp3" -y'
+
+                    run_command(command)
+                else:
+                    run_command(command)
 
                 # Step 2: Prepare the movie audio for overlapping
                 #second-minutes conversion
