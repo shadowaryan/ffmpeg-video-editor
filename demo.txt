@@ -15,3 +15,6 @@ ffmpeg -i movie_silenced.mp3 -i input1.mp3 -i input2.mp3 -i input3.mp3 -i input4
 # combine edited audio to main video
 
 ffmpeg -i movie.mp4 -i output.mp3 -c:v copy -map 0:v:0 -map 1:a:0 -shortest final_movie.mp4
+
+
+command - python main.py claim_directory movie_directory export_directory
